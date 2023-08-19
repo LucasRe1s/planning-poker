@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const gamesRouter = require('./routes/games-router')
+const gamesRouter = require('./routes/games-router');
 require('dotenv').config();
 
 const app = express();
@@ -9,10 +9,9 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use(gamesRouter)
+app.use(gamesRouter);
 
-
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
     console.log('Rodando na porta', port);
