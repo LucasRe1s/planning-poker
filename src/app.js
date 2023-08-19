@@ -11,7 +11,6 @@ app.use(bodyParser.json());
 
 app.use(gamesRouter);
 
-
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
