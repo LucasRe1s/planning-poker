@@ -1,7 +1,8 @@
+
 const { v4: uuidv4, v4 } = require('uuid');
+const database = require('../data/database')
 
 const urlBaseGame = 'localhost:3000/games'
-const database = [];
 const NAME_MAX_LENGHT = 60;
 
 function _validateName(name) {
@@ -23,6 +24,7 @@ function createGame({ name }) {
     id,
     name: _name,
     url: urlGame,
+    player: []
   }
 
   database.push(game);
@@ -38,3 +40,4 @@ module.exports = {
   createGame,
   getGames
 }
+
