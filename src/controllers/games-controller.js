@@ -1,5 +1,6 @@
 const gamesService = require('../services/games-service')
 const playersService = require('../services/create-players')
+
 function createGame(req, res) {
     try {
         const name = req.body.name;
@@ -38,3 +39,4 @@ function getId(req, res) {
 
 
 module.exports = { createGame, getGames, createPlayers, getId };
+
