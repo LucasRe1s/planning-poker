@@ -4,46 +4,64 @@ const gamesController = require('../controllers/games-controller')
 const database = require('../data/database')
 
 const urlBaseGame = 'localhost:3000/games'
-const NAME_MAX_LENGHT = 60;
+const NAME_MAX_LENGHT = 15;
 
 function _validateName(name) {
     if (!name) throw Error('Name required')
-  
-    if (name.length > NAME_MAX_LENGHT) throw Error('Max lenght 60')
+
+    if (name.length > NAME_MAX_LENGHT) throw Error('Max lenght 15')
 }
 
-function _validateGame(urlGame){
-    
-    const game = gamesService.createGame(urlGame);
-    
-    if(urlGame === game.id){
-        return game;
+
+function _validateGame(gameId) {
+
+    const games = gamesService.getGames()
+
+    for (let i = 0; i < games.length; i++) {
+        if (gameId === games[i].id) {
+            let game = games[i]
+
+            console.log(game)
+            return res.json({ game })
+
+        }
+
     }
-    
 }
 
-function createPlayers ({name, idUrl}) {
+function createPlayers({ name, gameId }) {
 
     const player_id = uuidv4();
-    const _name = (name || '').trim();
+
+    const _name = name;
     _validateName(_name);
-    const urlGame = `${urlBaseGame}/${idUrl}/${_name}`
+
+    // _validateGame(gameId)
+
+    const urlGame = `${urlBaseGame}/${gameId}/${_name}`
+
+
+
+
+
+
+    const player = [
+        {
+            player_id,
+            name: _name,
+            vote: null,
+            url: urlGame
     
-    const player = {
-        player_id,
-        name: _name,
-        vote: null,
-        url: urlGame
-    }
-    
+      
+        }
+    ]
+
+    database.push(player)
+
+    return player;
 }
 
 
 
-function getId () {
-    return database.id;
-}
 
-module.exports = {
-    createPlayers, getId
-}
+module.exports = { createPlayers }
