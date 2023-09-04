@@ -13,18 +13,17 @@ function _validateName(name) {
 
 function createGame({ name }) {
 
-  const _name = (name || '').trim()
-  const id = uuidv4();
-
+  const _name = (name || '').trim();
   _validateName(_name);
 
+  const id = uuidv4();
   const urlGame = `${urlBaseGame}/${id}`
 
   const game = {
     id,
     name: _name,
     url: urlGame,
-    player: []
+    players: []
   }
 
   database.push(game);
@@ -36,8 +35,13 @@ function getGames() {
   return database;
 }
 
+function getGameById(gameId) {
+  return database.find((game) => game.id === gameId);
+}
+
 module.exports = {
   createGame,
-  getGames
+  getGames,
+  getGameById
 }
 

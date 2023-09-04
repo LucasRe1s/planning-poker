@@ -1,10 +1,6 @@
 const gamesService = require('../services/games-service')
-const playersService = require('../services/create-players');
-const database = require('../data/database');
 
-let gamesList = [];
-
-function createGame(req, res) {
+async function createGame(req, res) {
   try {
     const name = req.body.name;
     const gameCreated = gamesService.createGame({ name })
@@ -14,67 +10,27 @@ function createGame(req, res) {
   }
 }
 
-
-
-function getGames(req, res) {
+async function getGames(req, res) {
   try {
-    gamesList = gamesService.getGames()
-    res.status(200).json(gamesList)
+    const games = gamesService.getGames()
+    res.status(200).json(games)
   } catch (error) {
     res.status(500).json({ messageError: error.message })
   }
 }
 
-function createPlayers(req, res) {
-
+async function getGameById(req, res) {
   try {
     const gameId = req.params.id;
-    const name = req.body.name;
-    const gameCreated = playersService.createPlayers({ name, gameId })
-    console.log("name " + name)
-    console.log('game id: ' + gameId)
-    res.status(201).json(gameCreated);
-    const games = gamesService.createGame(gameId);
-
-
-
-
-
-
-
-
+    const game = await gamesService.getGameById(gameId)
+    res.status(200).json(game)
   } catch (error) {
-    res.status(500).json({ messageError: error.message });
-
+    res.status(500).json({ messageError: error.message })
   }
-
-
-
 }
 
-
-
-
-async function getGameById(req, res) {
-
-
-  const games = gamesService.getGames()
-  const gameId = req.params.id;
-  
-  for(let i = 0; i < games.length; i++){
-    if (gameId === games[i].id) {
-      let game = games[i]
-     
-      console.log(game)
-      
-      return res.json({game})
-      
-    }
-    
-  }
-
-}
-
-
-
-module.exports = { createGame, getGames, createPlayers, getGameById };
+module.exports = {
+  createGame,
+  getGames,
+  getGameById
+};
