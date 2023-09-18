@@ -1,6 +1,6 @@
 
 const { v4: uuidv4, v4 } = require('uuid');
-const database = require('../data/database')
+const gamesRepository = require('../repositories/games-repository')
 
 const urlBaseGame = 'localhost:3000/games'
 const NAME_MAX_LENGHT = 60;
@@ -26,17 +26,15 @@ function createGame({ name }) {
     players: []
   }
 
-  database.push(game);
-
-  return game;
+  return gamesRepository.save(game);
 }
 
 function getGames() {
-  return database;
+  return gamesRepository.get();
 }
 
 function getGameById(gameId) {
-  return database.find((game) => game.id === gameId);
+  return gamesRepository.getById(gameId);
 }
 
 module.exports = {

@@ -1,7 +1,6 @@
 const { v4: uuidv4, v4 } = require('uuid');
 const gamesService = require('./games-service')
-const gamesController = require('../controllers/games-controller')
-const database = require('../data/database')
+const gamesRepository = require('../repositories/games-repository')
 
 const NAME_MAX_LENGHT = 15;
 
@@ -11,8 +10,8 @@ function _validateName(name) {
     if (name.length > NAME_MAX_LENGHT) throw Error(`Max lenght ${NAME_MAX_LENGHT}`)
 }
 
-function addPlayer({ gameId, name }) {
-    const playerId = uuidv4();
+function addPlayer({ gameId, player_id, name }) {
+    const playerId = player_id || uuidv4();
 
     const _name = name;
     _validateName(_name);
@@ -28,9 +27,8 @@ function addPlayer({ gameId, name }) {
 
     game.players.push(player);
 
-    return game;
+    return gamesRepository.update(gameId, game);
 }
-
 
 function vote({ gameId, playerId, vote }) {
     const game = gamesService.getGameById(gameId);
@@ -40,7 +38,7 @@ function vote({ gameId, playerId, vote }) {
 
     player.vote = vote;
 
-    return game;
+    return gamesRepository.update(gameId, game);
 }
 
 module.exports = { addPlayer, vote }
