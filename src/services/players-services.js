@@ -32,7 +32,7 @@ function addPlayer({ gameId, name }) {
 }
 
 
-function vote({ gameId, playerId, vote }) {
+function playerVote({ gameId, playerId, vote }) {
     const game = gamesService.getGameById(gameId);
     if (!game) throw Error(`Game not found. ${gameId}`);
 
@@ -43,4 +43,4 @@ function vote({ gameId, playerId, vote }) {
     return game;
 }
 
-module.exports = { addPlayer, vote }
+module.exports = { addPlayer, playerVote }
