@@ -1,20 +1,27 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-
-const gamesRouter = require('./routes/games-router');
+const cors = require('cors');
+const { createServer } = require("http");
+const { Server } = require("socket.io");
 require('dotenv').config();
-
-const app = express();
-
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-
-app.use(gamesRouter);
 
 const port = process.env.PORT || 3000;
 
-app.listen(port, () => {
-    console.log('Rodando na porta', port);
+const gamesRouter = require('./routes/games-router');
+
+const app = express();
+
+app.use(cors());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
+app.use(gamesRouter);
+
+const httpServer = createServer(app);
+
+httpServer.listen(port, () => {
+    console.log(`Server started on port ${port}`);
 });
 
-module.exports = app;
+const io = new Server(httpServer, { cors: {} });
+
+module.exports = io;
